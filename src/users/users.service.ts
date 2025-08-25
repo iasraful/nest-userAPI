@@ -34,16 +34,19 @@ export class UsersService {
       role: 'User',
     },
   ];
+
   findAll(role?: 'Admin' | 'User') {
     if (role) {
       return this.users.filter((user) => user.role === role);
     }
     return this.users;
   }
+
   findOne(id: number) {
     const user = this.users.find((user) => user.id === id);
     return user;
   }
+
   create(user: { name: string; email: string; role: 'Admin' | 'User' }) {
     const userID = [...this.users].sort((a, b) => b.id - a.id);
     const newUser = {
@@ -53,21 +56,23 @@ export class UsersService {
     this.users.push(newUser);
     return newUser;
   }
+
   update(
     id: number,
     updateUser: { name?: string; email?: string; role?: 'Admin' | 'User' },
   ) {
     this.users = this.users.map((user) => {
-      if (user.id == id) {
+      if (user.id === id) {
         return {
           ...user,
-          updateUser,
+          ...updateUser,
         };
       }
       return user;
     });
     return this.findOne(id);
   }
+
   delete(id: number) {
     const removeUser = this.findOne(id);
     this.users = this.users.filter((user) => user.id !== id);

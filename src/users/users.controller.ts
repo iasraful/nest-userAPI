@@ -13,24 +13,35 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @Get() // Get /users
+
+  @Get()
   findAll(@Query('role') role?: 'Admin' | 'User') {
-    return [];
+    return this.usersService.findAll(role);
   }
-  @Get(':id') // Get users/:id
+
+  @Get(':id')
   findOne(@Param('id') id: string) {
-    return { id };
+    return this.usersService.findOne(Number(id));
   }
-  @Post() // Post /users
-  create(@Body() user: {}) {
-    return user;
+
+  @Post()
+  create(
+    @Body() user: { name: string; email: string; role: 'Admin' | 'User' },
+  ) {
+    return this.usersService.create(user);
   }
-  @Patch(':id') //Patch
-  update(@Param('id') id: string, @Body() userUpdate: {}) {
-    return { id, ...userUpdate };
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body()
+    updateUser: { name?: string; email?: string; role?: 'Admin' | 'User' },
+  ) {
+    return this.usersService.update(Number(id), updateUser);
   }
-  @Delete(':id') // Get users/:id
+
+  @Delete(':id')
   delete(@Param('id') id: string) {
-    return { id };
+    return this.usersService.delete(Number(id));
   }
 }
